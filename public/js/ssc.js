@@ -26,11 +26,44 @@ function selectType(type) {
 }
 
 function loginRedirect() {
-    if (selectedLoginType === 'admin') {
-        window.location.href = '/admin';
-    } else {
-        window.location.href = '/ballot';
+    const loginId = document.getElementById('loginId')?.value || '';
+    const loginPw = document.getElementById('loginPw')?.value || '';
+
+    if (!loginId || !loginPw) {
+        alert('Please enter both ID and password');
+        return;
     }
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            email: loginId,
+            password: loginPw
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            if (selectedLoginType === 'admin') {
+                window.location.href = '/admin';
+            } else {
+                window.location.href = '/ballot';
+            }
+        } else {
+            alert('Login failed: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Login error:', error);
+        alert('An error occurred during login. Please try again.');
+    });
 }
 
 function togglePw(inputId, icon) {
@@ -126,8 +159,58 @@ function loadReviewSelections() {
 }
 
 function submitFinalVote() {
-    localStorage.removeItem('sscVoteSelections');
-    window.location.href = '/voted';
+    const selections = JSON.parse(localStorage.getItem('sscVoteSelections') || '[]');
+
+    if (selections.length === 0) {
+        alert('No votes to submit. Please select candidates.');
+        return;
+    }
+
+    // Prepare votes in the format expected by the backend
+    const votes = selections.map(item => ({
+        position: item.position,
+        candidate_name: item.candidate,
+        candidate_college: item.college
+    }));
+
+    // Show loading state
+    const submitBtn = document.querySelector('button[onclick="submitFinalVote()"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+    }
+
+    // Submit votes to the server
+    fetch('/api/submit-votes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+        },
+        body: JSON.stringify({ votes: votes })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            localStorage.removeItem('sscVoteSelections');
+            localStorage.setItem('sscSubmittedAt', new Date().toLocaleString());
+            window.location.href = '/voted';
+        } else {
+            alert('Error submitting votes: ' + (data.message || 'Unknown error'));
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Vote';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while submitting your votes. Please try again.');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Vote';
+        }
+    });
 }
 
 function showAdminTab(event, tabName) {
@@ -182,9 +265,93 @@ function loadAdminVoterStatus() {
     }
 }
 
+function initializeVotingPage() {
+    // Check voting status when the page loads
+    // Only check if we're on a voting-related page
+    if (window.location.pathname === '/ballot' || window.location.pathname === '/review') {
+        checkVotingStatus();
+    }
+}
+
+function checkVotingStatus() {
+    // Fetch voting status from the server
+    fetch('/api/voting-status', {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+        }
+    })
+    .then(response => {
+        if (response.status === 401) {
+            // Not authenticated - this is expected if not logged in
+            return null;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data) return;
+
+        if (data.has_voted) {
+            // User has already voted - show warning and prevent voting
+            showAlreadyVotedMessage();
+        }
+    })
+    .catch(error => {
+        // Silently fail - the check is optional
+        console.error('Error checking voting status:', error);
+    });
+}
+
+function showAlreadyVotedMessage() {
+    // Disable the main content
+    const ballotSection = document.querySelector('[data-vote-position]');
+    if (ballotSection) {
+        const parent = ballotSection.closest('.page') || ballotSection.closest('body');
+        if (parent) {
+            const message = document.createElement('div');
+            message.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                ">
+                    <div style="
+                        background: var(--bg-dark);
+                        border: 1px solid var(--gold);
+                        border-radius: 8px;
+                        padding: 2rem;
+                        text-align: center;
+                        max-width: 400px;
+                    ">
+                        <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold-light);">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                        <h2 style="color: var(--gold-light); margin-bottom: 0.5rem;">You've Already Voted!</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                            Each voter can only vote once. Your vote has already been recorded.
+                        </p>
+                        <a href="/transparency" class="btn-outline-gold">
+                            <i class="bi bi-bar-chart-fill me-2"></i>
+                            View Results
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(message);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     updateProgress();
     loadReviewSelections();
     loadVotedInfo();
     loadAdminVoterStatus();
+    initializeVotingPage();
 });
