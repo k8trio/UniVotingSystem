@@ -29,7 +29,6 @@
 
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <div class="navbar-nav ms-auto">
-                    <x-nav-link href="/home">Home</x-nav-link>
                     <x-nav-link href="/ballot">Cast Vote</x-nav-link>
                     <x-nav-link href="/transparency">Transparency</x-nav-link>
                     <x-nav-link href="/">Logout</x-nav-link>
