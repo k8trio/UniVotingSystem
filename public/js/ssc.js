@@ -25,6 +25,57 @@ function selectType(type) {
     }
 }
 
+function registerUser() {
+    const fullName = document.getElementById('fullName')?.value || '';
+    const email = document.getElementById('registerEmail')?.value || '';
+    const password = document.getElementById('registerPassword')?.value || '';
+    const confirmPassword = document.getElementById('confirmPassword')?.value || '';
+
+    if (!fullName || !email || !password || !confirmPassword) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+
+    if (password.length < 8) {
+        alert('Password must be at least 8 characters');
+        return;
+    }
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            name: fullName,
+            email: email,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Redirect to QR verification page
+            window.location.href = '/qr-verification';
+        } else {
+            alert('Registration failed: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Registration error:', error);
+        alert('An error occurred during registration. Please try again.');
+    });
+}
+
 function loginRedirect() {
     const loginId = document.getElementById('loginId')?.value || '';
     const loginPw = document.getElementById('loginPw')?.value || '';

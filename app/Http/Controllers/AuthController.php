@@ -50,12 +50,14 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'qr_code_token' => \Illuminate\Support\Str::random(32),
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' => 'User registered successfully',
             'user' => $user,
+            'next_step' => 'qr_verification',
         ], 201);
     }
 

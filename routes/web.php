@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QRCodeController;
 
 Route::get('/', function () {
     return view('login');
@@ -15,6 +16,16 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 });
+
+Route::get('/qr-verification', function () {
+    return view('qr-verification');
+})->name('qr-verification');
+
+Route::get('/qr-scanner', function () {
+    return view('qr-scanner');
+})->name('qr-scanner');
+
+Route::get('/verify-qr/{token}', [QRCodeController::class, 'verifyQRCode'])->name('verify-qr');
 
 Route::get('/ballot', function () {
     return view('ballot');
@@ -41,6 +52,11 @@ Route::post('/api/auth/login', [AuthController::class, 'login']);
 Route::post('/api/auth/register', [AuthController::class, 'register']);
 Route::post('/api/auth/logout', [AuthController::class, 'logout']);
 Route::get('/api/auth/me', [AuthController::class, 'me']);
+
+// QR Code routes
+Route::get('/api/qr-code', [QRCodeController::class, 'getQRCode']);
+Route::get('/api/qr-status', [QRCodeController::class, 'checkQRStatus']);
+Route::get('/api/qr-code/image', [QRCodeController::class, 'generateQRCode']);
 
 // Voting routes
 Route::get('/api/voting-status', [VoteController::class, 'checkVotingStatus']);
