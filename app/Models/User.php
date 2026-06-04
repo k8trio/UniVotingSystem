@@ -2,27 +2,39 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'has_voted', 'qr_code_token', 'qr_verified'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable = [
+        'student_id',
+        'last_name',
+        'first_name',
+        'year_and_section',
+        'college',
+        'name',
+        'email',
+        'password',
+        'role',
+        'has_voted',
+        'voted_at',
+        'qr_code_token',
+        'qr_verified',
+        'qr_verified_at',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -35,19 +47,18 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the votes cast by this user.
-     */
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
     }
 
-    /**
-     * Check if the user has already voted.
-     */
     public function hasVoted(): bool
     {
         return $this->has_voted === true;
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return trim(($this->last_name ?? '') . ', ' . ($this->first_name ?? ''));
     }
 }
