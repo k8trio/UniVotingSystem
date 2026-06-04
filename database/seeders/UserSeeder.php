@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'role' => 'voter',
                 'has_voted' => false,
-                'qr_code' => Str::random(32),
+                'qr_code_token' => Str::random(32),
             ]
         );
     }
