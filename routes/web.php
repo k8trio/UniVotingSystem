@@ -7,6 +7,7 @@ use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\BallotController;
 use App\Http\Controllers\TransparencyController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApiController;
 
 Route::get('/', function () {
     return view('login');
@@ -54,6 +55,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.export.candidates');
     Route::get('/admin/export/results', [AdminController::class, 'exportResults'])
         ->name('admin.export.results');
+});
+
+// API Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/api/candidates', [ApiController::class, 'candidates']);
+    Route::get('/api/candidates/{id}', [ApiController::class, 'showCandidate']);
+    Route::post('/api/candidates', [ApiController::class, 'storeCandidate']);
+    Route::put('/api/candidates/{id}', [ApiController::class, 'updateCandidate']);
+    Route::patch('/api/candidates/{id}', [ApiController::class, 'patchCandidate']);
+    Route::delete('/api/candidates', [ApiController::class, 'deleteAllCandidates']);
+    Route::delete('/api/candidates/{id}', [ApiController::class, 'deleteCandidate']);
+    Route::get('/api/results', [ApiController::class, 'results']);
+    Route::get('/api/voters', [ApiController::class, 'voters']);
+    Route::get('/api/voters/{id}', [ApiController::class, 'showVoter']);
 });
 
 // Authentication routes
