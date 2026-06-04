@@ -3,10 +3,6 @@
         <div class="container py-5">
 
             <div class="text-center mb-4">
-                <div class="cinzel" style="font-size:.75rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase">
-                    UniVotingSystem
-                </div>
-
                 <h2 style="color:var(--gold-light)">
                     Review Your Ballot
                 </h2>

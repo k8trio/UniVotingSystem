@@ -5,6 +5,7 @@ use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\BallotController;
+use App\Http\Controllers\TransparencyController;
 
 Route::get('/', function () {
     return view('login');
@@ -31,7 +32,7 @@ Route::middleware(['auth', 'role:voter'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::view('/transparency', 'transparency');
+    Route::get('/transparency', [TransparencyController::class, 'index']);
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
