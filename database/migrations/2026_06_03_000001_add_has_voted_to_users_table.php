@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('has_voted')->default(false)->after('email');
+            $table->boolean('has_voted')->default(false)->after('role');
             $table->timestamp('voted_at')->nullable()->after('has_voted');
         });
     }
