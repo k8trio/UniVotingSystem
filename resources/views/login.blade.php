@@ -47,6 +47,8 @@
                 LOGIN
             </button>
 
+            <div id="loginMessage" class="mt-3 text-center" style="font-size:.8rem;color:#ffaaaa"></div>
+
             <div class="gold-divider"></div>
 
             <p style="font-size:.78rem;text-align:center;color:var(--text-muted)">

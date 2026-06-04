@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -14,44 +14,47 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $validated = $request->validate([
+            'type' => 'required|in:voter,admin',
             'login_id' => 'required|string',
             'password' => 'required|string',
-            'type' => 'required|in:voter,admin',
         ]);
 
-        $user = User::where('student_id', $validated['login_id'])
-            ->orWhere('email', $validated['login_id'])
-            ->first();
+        if ($validated['type'] === 'admin') {
+            $user = User::where('username', $validated['login_id'])
+                ->where('role', 'admin')
+                ->first();
+        } else {
+            $user = User::where('student_id', $validated['login_id'])
+                ->where('role', 'voter')
+                ->first();
+        }
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
-                'status' => 'error',
+                'success' => false,
                 'message' => 'Invalid credentials.',
             ], 401);
-        }
-
-        if ($validated['type'] === 'admin' && $user->role !== 'admin') {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This account is not an admin account.',
-            ], 403);
-        }
-
-        if ($validated['type'] === 'voter' && $user->role !== 'voter') {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This account is not a voter account.',
-            ], 403);
         }
 
         Auth::login($user);
         $request->session()->regenerate();
 
         return response()->json([
-            'status' => 'success',
+            'success' => true,
             'message' => 'Login successful.',
-            'user' => $user,
             'redirect' => $user->role === 'admin' ? '/admin' : '/ballot',
+            'user' => [
+                'id' => $user->id,
+                'student_id' => $user->student_id,
+                'username' => $user->username,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'college' => $user->college,
+                'year_and_section' => $user->year_and_section,
+                'role' => $user->role,
+                'has_voted' => $user->has_voted,
+                'qr_code_token' => $user->qr_code_token,
+            ],
         ]);
     }
 
@@ -68,12 +71,11 @@ class AuthController extends Controller
 
         $user = User::create([
             'student_id' => $validated['student_id'],
+            'username' => null,
             'last_name' => $validated['last_name'],
             'first_name' => $validated['first_name'],
             'year_and_section' => $validated['year_and_section'],
             'college' => $validated['college'],
-            'name' => $validated['first_name'] . ' ' . $validated['last_name'],
-            'email' => $validated['student_id'] . '@univote.local',
             'password' => Hash::make($validated['password']),
             'role' => 'voter',
             'has_voted' => false,
@@ -84,11 +86,21 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return response()->json([
-            'status' => 'success',
+            'success' => true,
             'message' => 'Registration successful.',
-            'user' => $user,
             'redirect' => '/ballot',
-        ], 201);
+            'user' => [
+                'id' => $user->id,
+                'student_id' => $user->student_id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'college' => $user->college,
+                'year_and_section' => $user->year_and_section,
+                'role' => $user->role,
+                'has_voted' => $user->has_voted,
+                'qr_code_token' => $user->qr_code_token,
+            ],
+        ]);
     }
 
     public function logout(Request $request): JsonResponse
@@ -99,7 +111,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return response()->json([
-            'status' => 'success',
+            'success' => true,
             'message' => 'Logged out successfully.',
             'redirect' => '/',
         ]);
@@ -107,17 +119,17 @@ class AuthController extends Controller
 
     public function me(): JsonResponse
     {
-        $user = Auth::user();
-
-        if (!$user) {
+        if (!Auth::check()) {
             return response()->json([
-                'status' => 'error',
+                'success' => false,
                 'message' => 'Not authenticated.',
             ], 401);
         }
 
+        $user = Auth::user();
+
         return response()->json([
-            'status' => 'success',
+            'success' => true,
             'user' => $user,
         ]);
     }
