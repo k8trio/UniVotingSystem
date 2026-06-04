@@ -426,16 +426,21 @@ function submitFinalVote() {
 function showAdminTab(event, tabName) {
     event.preventDefault();
 
-    const sidebarItems = document.querySelectorAll('.sidebar-item');
-    const tabs = document.querySelectorAll('.admin-tab');
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
 
-    sidebarItems.forEach(item => item.classList.remove('active'));
-    tabs.forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    const selectedTab = document.getElementById('admin-' + tabName);
+
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
 
     event.currentTarget.classList.add('active');
-
-    const activeTab = document.getElementById('admin-' + tabName);
-    if (activeTab) activeTab.classList.add('active');
 }
 
 function loadVotedInfo() {
