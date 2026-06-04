@@ -65,7 +65,7 @@
                     System
                 </div>
 
-                <a href="/" class="sidebar-item">
+                <a href="#" class="sidebar-item" onclick="logoutUser()">
                     <i class="bi bi-box-arrow-right"></i>
                     Logout
                 </a>

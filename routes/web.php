@@ -5,8 +5,7 @@ use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
 
-
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('login');
 })->name('login');
 

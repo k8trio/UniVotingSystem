@@ -6,7 +6,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>PSU-LC SSC Elections 2026</title>
+    <title>PSU-LC SSC Elections</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -64,8 +64,10 @@
                 <div class="d-flex flex-wrap">
                     <x-nav-link href="/ballot">Cast Vote</x-nav-link>
                     <x-nav-link href="/transparency">Transparency</x-nav-link>
-                    <x-nav-link href="/"><i class="bi bi-box-arrow-right me-1"></i>Logout</x-nav-link>
-                </div>
+                    <button type="button" class="nav-link-ssc" onclick="logoutUser()">
+                        <i class="bi bi-box-arrow-right me-1"></i>
+                        Logout
+                    </button>
             </div>
         </div>
     </nav>

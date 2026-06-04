@@ -197,6 +197,42 @@ async function registerAccount() {
     }
 }
 
+async function logoutUser() {
+    try {
+        const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken(),
+            },
+        });
+
+        const data = await response.json();
+
+        window.location.href = data.redirect || '/login';
+    } catch (error) {
+        window.location.href = '/login';
+    }
+}
+
+async function logoutUser() {
+    try {
+        const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken(),
+            },
+        });
+
+        const data = await response.json();
+
+        window.location.href = data.redirect || '/';
+    } catch (error) {
+        window.location.href = '/';
+    }
+}
+
 function getCsrfToken() {
     return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 }
