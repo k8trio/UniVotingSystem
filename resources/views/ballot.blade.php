@@ -7,10 +7,6 @@
             <div class="ballot-content">
 
                 <div class="text-center mb-3 pt-2">
-                    <div class="cinzel" style="font-size:.68rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase">
-                        UniVotingSystem
-                    </div>
-
                     <h2 style="font-size:1.3rem;color:var(--gold-light)">
                         Official Ballot
                     </h2>
