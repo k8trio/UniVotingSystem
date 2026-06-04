@@ -253,13 +253,35 @@ function togglePw(inputId, icon) {
 }
 
 function selectCandidate(card) {
-    const positionSection = card.closest('.position-section');
-    if (!positionSection) return;
+    const positionSection = card.closest('[data-vote-position]');
 
-    const cards = positionSection.querySelectorAll('.candidate-card');
-    cards.forEach(item => item.classList.remove('selected'));
+    if (!positionSection) {
+        return;
+    }
 
-    card.classList.add('selected');
+    const maxWinners = parseInt(positionSection.getAttribute('data-max-winners') || '1');
+    const selectedCards = positionSection.querySelectorAll('.candidate-card.selected');
+
+    if (maxWinners === 1) {
+        const cards = positionSection.querySelectorAll('.candidate-card');
+
+        cards.forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        card.classList.add('selected');
+    } else {
+        if (card.classList.contains('selected')) {
+            card.classList.remove('selected');
+        } else {
+            if (selectedCards.length >= maxWinners) {
+                alert('You can only select ' + maxWinners + ' candidates for this position.');
+                return;
+            }
+
+            card.classList.add('selected');
+        }
+    }
 
     updateProgress();
     saveSelectionsToLocalStorage();
@@ -267,17 +289,27 @@ function selectCandidate(card) {
 
 function updateProgress() {
     const allPositions = document.querySelectorAll('[data-vote-position]');
-    const selectedPositions = document.querySelectorAll('[data-vote-position] .candidate-card.selected');
-
     const progressText = document.getElementById('progressText');
     const progressBar = document.getElementById('progressBar');
-    if (!progressText || !progressBar) return;
 
-    const total = allPositions.length;
-    const done = selectedPositions.length;
+    if (!progressText || !progressBar) {
+        return;
+    }
 
-    progressText.textContent = `${done} / ${total}`;
-    const percent = total > 0 ? (done / total) * 100 : 0;
+    let totalRequired = 0;
+    let totalSelected = 0;
+
+    allPositions.forEach(position => {
+        const maxWinners = parseInt(position.getAttribute('data-max-winners') || '1');
+        const selectedCards = position.querySelectorAll('.candidate-card.selected');
+
+        totalRequired += maxWinners;
+        totalSelected += selectedCards.length;
+    });
+
+    progressText.textContent = totalSelected + ' / ' + totalRequired;
+
+    const percent = totalRequired > 0 ? (totalSelected / totalRequired) * 100 : 0;
     progressBar.style.width = percent + '%';
 }
 
@@ -286,15 +318,19 @@ function saveSelectionsToLocalStorage() {
     const selections = [];
 
     positions.forEach(position => {
-        const positionName = position.getAttribute('data-vote-position');
-        const selectedCard = position.querySelector('.candidate-card.selected');
-        if (selectedCard) {
+        const positionId = position.getAttribute('data-vote-position');
+        const positionName = position.getAttribute('data-position-name');
+        const selectedCards = position.querySelectorAll('.candidate-card.selected');
+
+        selectedCards.forEach(selectedCard => {
             selections.push({
+                position_id: positionId,
                 position: positionName,
+                candidate_id: selectedCard.getAttribute('data-candidate-id'),
                 candidate: selectedCard.getAttribute('data-candidate-name'),
                 college: selectedCard.getAttribute('data-candidate-college')
             });
-        }
+        });
     });
 
     localStorage.setItem('sscVoteSelections', JSON.stringify(selections));
