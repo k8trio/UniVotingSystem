@@ -89,17 +89,7 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Registration successful.',
             'redirect' => '/ballot',
-            'user' => [
-                'id' => $user->id,
-                'student_id' => $user->student_id,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'college' => $user->college,
-                'year_and_section' => $user->year_and_section,
-                'role' => $user->role,
-                'has_voted' => $user->has_voted,
-                'qr_code_token' => $user->qr_code_token,
-            ],
+            'user' => $user,
         ]);
     }
 
