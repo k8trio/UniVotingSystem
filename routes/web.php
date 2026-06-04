@@ -5,9 +5,6 @@ use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
 
-Route::get('/', function () {
-    return view('login');
-})->name('home');
 
 Route::get('/login', function () {
     return view('login');
@@ -27,24 +24,18 @@ Route::get('/qr-scanner', function () {
 
 Route::get('/verify-qr/{token}', [QRCodeController::class, 'verifyQRCode'])->name('verify-qr');
 
-Route::get('/ballot', function () {
-    return view('ballot');
+Route::middleware(['auth', 'role:voter'])->group(function () {
+    Route::view('/ballot', 'ballot');
+    Route::view('/review', 'review');
+    Route::view('/voted', 'voted');
 });
 
-Route::get('/review', function () {
-    return view('review');
+Route::middleware(['auth'])->group(function () {
+    Route::view('/transparency', 'transparency');
 });
 
-Route::get('/voted', function () {
-    return view('voted');
-});
-
-Route::get('/transparency', function () {
-    return view('transparency');
-});
-
-Route::get('/admin', function () {
-    return view('admin');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::view('/admin', 'admin');
 });
 
 // Authentication routes
