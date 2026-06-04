@@ -24,7 +24,7 @@ Route::get('/qr-scanner', function () {
 Route::get('/verify-qr/{token}', [QRCodeController::class, 'verifyQRCode'])->name('verify-qr');
 
 Route::middleware(['auth', 'role:voter'])->group(function () {
-    Route::view('/ballot', 'ballot');
+    Route::get('/ballot', [BallotController::class, 'index']);
     Route::view('/review', 'review');
     Route::view('/voted', 'voted');
 });
