@@ -54,10 +54,12 @@
                     </div>
 
                     <div class="col-12 mt-2">
-                        <button type="button" class="btn-gold w-100 py-3" onclick="window.location.href='/ballot'">
+                        <button type="button" class="btn-gold w-100 py-3" onclick="registerAccount()">
                             <i class="bi bi-person-plus me-2"></i>
                             Register
                         </button>
+
+                        <div id="registerMessage" class="mt-3 text-center" style="font-size:.8rem;color:#ffaaaa"></div>
                     </div>
 
                     <div class="col-12 text-center">
