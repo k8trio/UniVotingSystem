@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidate;
 use App\Models\Vote;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VoteController extends Controller
 {
@@ -56,11 +57,10 @@ class VoteController extends Controller
         }
 
         // Validate the request
-        $validated = $request->validate([
+       $validated = $request->validate([
             'votes' => 'required|array|min:1',
-            'votes.*.position' => 'required|string',
-            'votes.*.candidate_name' => 'required|string',
-            'votes.*.candidate_college' => 'required|string',
+            'votes.*.position_id' => 'required|integer|exists:positions,id',
+            'votes.*.candidate_id' => 'required|integer|exists:candidates,id',
         ]);
 
         try {
@@ -68,12 +68,19 @@ class VoteController extends Controller
             \DB::beginTransaction();
 
             // Store all votes
-            foreach ($validated['votes'] as $vote) {
+            foreach ($validated['votes'] as $voteData) {
+                $candidate = Candidate::with('position')
+                    ->where('id', $voteData['candidate_id'])
+                    ->where('position_id', $voteData['position_id'])
+                    ->firstOrFail();
+
                 Vote::create([
                     'user_id' => $user->id,
-                    'position' => $vote['position'],
-                    'candidate_name' => $vote['candidate_name'],
-                    'candidate_college' => $vote['candidate_college'],
+                    'position_id' => $candidate->position_id,
+                    'candidate_id' => $candidate->id,
+                    'position' => $candidate->position->name,
+                    'candidate_name' => $candidate->full_name,
+                    'candidate_college' => $candidate->college,
                 ]);
             }
 
