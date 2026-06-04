@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\BallotController;
 
 Route::get('/', function () {
     return view('login');
