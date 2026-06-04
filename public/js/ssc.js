@@ -127,11 +127,7 @@ async function loginRedirect() {
 }
 
 async function registerAccount() {
-    const messageBox = document.getElementById('registerMessage');
-
-    if (messageBox) {
-        messageBox.textContent = '';
-    }
+    const registerMessage = document.getElementById('registerMessage');
 
     const studentId = document.getElementById('regId')?.value.trim();
     const lastName = document.getElementById('regLast')?.value.trim();
@@ -139,19 +135,23 @@ async function registerAccount() {
     const yearSection = document.getElementById('regYear')?.value.trim();
     const college = document.getElementById('regCollege')?.value;
     const password = document.getElementById('regPw')?.value;
-    const confirmPassword = document.getElementById('regPw2')?.value;
+    const passwordConfirmation = document.getElementById('regPw2')?.value;
 
-    if (!studentId || !lastName || !firstName || !yearSection || !college || !password || !confirmPassword) {
-        if (messageBox) {
-            messageBox.textContent = 'Please fill in all fields.';
-        }
+    if (!studentId || !lastName || !firstName || !yearSection || !college || !password || !passwordConfirmation) {
+        registerMessage.innerHTML = `
+            <div class="alert alert-warning">
+                Please complete all fields.
+            </div>
+        `;
         return;
     }
 
-    if (password !== confirmPassword) {
-        if (messageBox) {
-            messageBox.textContent = 'Passwords do not match.';
-        }
+    if (password !== passwordConfirmation) {
+        registerMessage.innerHTML = `
+            <div class="alert alert-danger">
+                Passwords do not match.
+            </div>
+        `;
         return;
     }
 
@@ -170,30 +170,34 @@ async function registerAccount() {
                 year_and_section: yearSection,
                 college: college,
                 password: password,
-                password_confirmation: confirmPassword,
+                password_confirmation: passwordConfirmation,
             }),
         });
 
         const data = await response.json();
 
-        if (!response.ok || !data.success) {
-            if (messageBox) {
-                if (data.errors) {
-                    const firstError = Object.values(data.errors)[0][0];
-                    messageBox.textContent = firstError;
-                } else {
-                    messageBox.textContent = data.message || 'Registration failed.';
-                }
-            }
-
+        if (!response.ok) {
+            registerMessage.innerHTML = `
+                <div class="alert alert-danger">
+                    ${data.message || 'Registration failed. Please check your details.'}
+                </div>
+            `;
             return;
         }
 
-        window.location.href = data.redirect;
+        registerMessage.innerHTML = `
+            <div class="alert alert-success">
+                Registration successful. Redirecting...
+            </div>
+        `;
+
+        window.location.href = data.redirect || '/ballot';
     } catch (error) {
-        if (messageBox) {
-            messageBox.textContent = 'Something went wrong. Please try again.';
-        }
+        registerMessage.innerHTML = `
+            <div class="alert alert-danger">
+                Something went wrong. Please try again.
+            </div>
+        `;
     }
 }
 

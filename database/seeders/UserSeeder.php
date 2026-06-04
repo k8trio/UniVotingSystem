@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
                 'first_name' => 'Kate Diane',
                 'last_name' => 'Inoue',
                 'year_and_section' => 'III-BSIT-B',
-                'college' => 'CCS',
+                'college' => 'CCS - College of Computer Sciences',
                 'password' => Hash::make('password123'),
                 'role' => 'voter',
                 'has_voted' => false,
