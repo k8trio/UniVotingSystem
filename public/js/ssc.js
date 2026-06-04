@@ -8,7 +8,9 @@ function selectType(type) {
     const loginLabel = document.getElementById('loginIdLabel');
     const loginInput = document.getElementById('loginId');
 
-    if (!voterBtn || !adminBtn || !loginLabel || !loginInput) return;
+    if (!voterBtn || !adminBtn || !loginLabel || !loginInput) {
+        return;
+    }
 
     if (type === 'admin') {
         voterBtn.classList.remove('sel');
@@ -21,7 +23,7 @@ function selectType(type) {
         voterBtn.classList.add('sel');
 
         loginLabel.textContent = 'Student ID';
-        loginInput.placeholder = 'e.g. 2021-00001';
+        loginInput.placeholder = 'e.g. 23-LN-0001';
     }
 }
 
@@ -76,45 +78,127 @@ function registerUser() {
     });
 }
 
-function loginRedirect() {
-    const loginId = document.getElementById('loginId')?.value || '';
-    const loginPw = document.getElementById('loginPw')?.value || '';
+async function loginRedirect() {
+    const loginId = document.getElementById('loginId')?.value.trim();
+    const password = document.getElementById('loginPw')?.value;
+    const messageBox = document.getElementById('loginMessage');
 
-    if (!loginId || !loginPw) {
-        alert('Please enter both ID and password');
+    if (messageBox) {
+        messageBox.textContent = '';
+    }
+
+    if (!loginId || !password) {
+        if (messageBox) {
+            messageBox.textContent = 'Please enter your credentials.';
+        }
         return;
     }
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken(),
+            },
+            body: JSON.stringify({
+                type: selectedLoginType,
+                login_id: loginId,
+                password: password,
+            }),
+        });
 
-    fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-            email: loginId,
-            password: loginPw
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            if (selectedLoginType === 'admin') {
-                window.location.href = '/admin';
-            } else {
-                window.location.href = '/ballot';
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            if (messageBox) {
+                messageBox.textContent = data.message || 'Login failed.';
             }
-        } else {
-            alert('Login failed: ' + (data.message || 'Unknown error'));
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Login error:', error);
-        alert('An error occurred during login. Please try again.');
-    });
+
+        window.location.href = data.redirect;
+    } catch (error) {
+        if (messageBox) {
+            messageBox.textContent = 'Something went wrong. Please try again.';
+        }
+    }
+}
+
+async function registerAccount() {
+    const messageBox = document.getElementById('registerMessage');
+
+    if (messageBox) {
+        messageBox.textContent = '';
+    }
+
+    const studentId = document.getElementById('regId')?.value.trim();
+    const lastName = document.getElementById('regLast')?.value.trim();
+    const firstName = document.getElementById('regFirst')?.value.trim();
+    const yearSection = document.getElementById('regYear')?.value.trim();
+    const college = document.getElementById('regCollege')?.value;
+    const password = document.getElementById('regPw')?.value;
+    const confirmPassword = document.getElementById('regPw2')?.value;
+
+    if (!studentId || !lastName || !firstName || !yearSection || !college || !password || !confirmPassword) {
+        if (messageBox) {
+            messageBox.textContent = 'Please fill in all fields.';
+        }
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        if (messageBox) {
+            messageBox.textContent = 'Passwords do not match.';
+        }
+        return;
+    }
+
+    try {
+        const response = await fetch('/register-account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken(),
+            },
+            body: JSON.stringify({
+                student_id: studentId,
+                last_name: lastName,
+                first_name: firstName,
+                year_and_section: yearSection,
+                college: college,
+                password: password,
+                password_confirmation: confirmPassword,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            if (messageBox) {
+                if (data.errors) {
+                    const firstError = Object.values(data.errors)[0][0];
+                    messageBox.textContent = firstError;
+                } else {
+                    messageBox.textContent = data.message || 'Registration failed.';
+                }
+            }
+
+            return;
+        }
+
+        window.location.href = data.redirect;
+    } catch (error) {
+        if (messageBox) {
+            messageBox.textContent = 'Something went wrong. Please try again.';
+        }
+    }
+}
+
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 }
 
 function togglePw(inputId, icon) {
