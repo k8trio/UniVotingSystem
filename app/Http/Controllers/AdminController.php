@@ -130,4 +130,159 @@ class AdminController extends Controller
 
         return redirect('/admin#candidates')->with('success', 'Candidate removed successfully.');
     }
+
+    public function resetVoter(User $user): RedirectResponse
+    {
+        $user->update([
+            'has_voted' => false,
+            'voted_at' => null,
+        ]);
+
+        Vote::where('user_id', $user->id)->delete();
+
+        return redirect('/admin#voters')->with('success', 'Voter voting status has been reset.');
+    }
+
+    public function deleteVoter(User $user): RedirectResponse
+    {
+        if ($user->role === 'admin') {
+            return redirect('/admin#voters')->with('success', 'Admin account cannot be removed here.');
+        }
+
+        $user->delete();
+
+        return redirect('/admin#voters')->with('success', 'Voter removed successfully.');
+    }
+
+    public function exportVoters()
+    {
+        $filename = 'voters_report.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Student ID',
+                'Last Name',
+                'First Name',
+                'College',
+                'Year and Section',
+                'Status',
+                'Voted At',
+            ]);
+
+            $voters = User::where('role', 'voter')
+                ->orderBy('college')
+                ->orderBy('last_name')
+                ->get();
+
+            foreach ($voters as $voter) {
+                fputcsv($file, [
+                    $voter->student_id,
+                    $voter->last_name,
+                    $voter->first_name,
+                    $voter->college,
+                    $voter->year_and_section,
+                    $voter->has_voted ? 'Voted' : 'Not Yet',
+                    $voter->voted_at,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportCandidates()
+    {
+        $filename = 'candidates_report.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Position',
+                'Last Name',
+                'First Name',
+                'College',
+                'Partylist',
+                'Status',
+            ]);
+
+            $candidates = Candidate::with('position')
+                ->orderBy('position_id')
+                ->orderBy('last_name')
+                ->get();
+
+            foreach ($candidates as $candidate) {
+                fputcsv($file, [
+                    $candidate->position->name ?? 'No Position',
+                    $candidate->last_name,
+                    $candidate->first_name,
+                    $candidate->college,
+                    $candidate->partylist,
+                    $candidate->is_active ? 'Active' : 'Inactive',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportResults()
+    {
+        $filename = 'results_report.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Position',
+                'Candidate',
+                'College',
+                'Total Votes',
+            ]);
+
+            $candidates = Candidate::with('position')
+                ->orderBy('position_id')
+                ->orderBy('last_name')
+                ->get();
+
+            $voteCounts = Vote::selectRaw('candidate_id, COUNT(*) as total_votes')
+                ->whereNotNull('candidate_id')
+                ->groupBy('candidate_id')
+                ->pluck('total_votes', 'candidate_id');
+
+            foreach ($candidates as $candidate) {
+                fputcsv($file, [
+                    $candidate->position->name ?? 'No Position',
+                    $candidate->full_name,
+                    $candidate->college,
+                    $voteCounts[$candidate->id] ?? 0,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

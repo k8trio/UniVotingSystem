@@ -563,6 +563,59 @@ function showAlreadyVotedMessage() {
     }
 }
 
+async function downloadReport(url, filename) {
+    const exportMessage = document.getElementById('exportMessage');
+
+    if (exportMessage) {
+        exportMessage.innerHTML = `
+            <div class="alert alert-info">
+                Preparing report, please wait...
+            </div>
+        `;
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/csv',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Export failed.');
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+
+        link.remove();
+        window.URL.revokeObjectURL(downloadUrl);
+
+        if (exportMessage) {
+            exportMessage.innerHTML = `
+                <div class="alert alert-success">
+                    ${filename} downloaded successfully.
+                </div>
+            `;
+        }
+    } catch (error) {
+        if (exportMessage) {
+            exportMessage.innerHTML = `
+                <div class="alert alert-danger">
+                    Unable to export report. Please try again.
+                </div>
+            `;
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     updateProgress();
     loadReviewSelections();

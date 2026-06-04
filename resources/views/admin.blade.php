@@ -48,6 +48,36 @@
                         <p>
                             Welcome, Admin! · SSC Elections 2026
                         </p>
+                        <div id="exportMessage" class="mt-3"></div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <button
+                                type="button"
+                                class="btn-outline-gold btn-sm-ssc"
+                                onclick="downloadReport('{{ route('admin.export.voters') }}', 'voters_report.csv')"
+                            >
+                                <i class="bi bi-download me-1"></i>
+                                Export Voters CSV
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn-outline-gold btn-sm-ssc"
+                                onclick="downloadReport('{{ route('admin.export.candidates') }}', 'candidates_report.csv')"
+                            >
+                                <i class="bi bi-download me-1"></i>
+                                Export Candidates CSV
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn-outline-gold btn-sm-ssc"
+                                onclick="downloadReport('{{ route('admin.export.results') }}', 'results_report.csv')"
+                            >
+                                <i class="bi bi-download me-1"></i>
+                                Export Results CSV
+                            </button>
+                        </div>
                     </div>
 
                     <div class="row g-3 mb-4">
@@ -420,6 +450,7 @@
                         </div>
                     </div>
                 </div>
+
                 {{-- VOTERS TAB --}}
                 <div class="admin-tab" id="admin-voters">
                     <div class="page-hero" style="margin:-1.5rem -1.5rem 1.5rem;text-align:left;padding:1.5rem">
@@ -428,9 +459,15 @@
                         </h2>
 
                         <p>
-                            View and manage registered voters
+                            View, reset, and manage registered voters
                         </p>
                     </div>
+
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
                     <div class="ssc-card">
                         <div class="ssc-card-header">
@@ -447,6 +484,8 @@
                                         <th>College</th>
                                         <th>Year &amp; Section</th>
                                         <th>Status</th>
+                                        <th>Voted At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
 
@@ -482,10 +521,58 @@
                                                     </span>
                                                 @endif
                                             </td>
+
+                                            <td>
+                                                @if ($voter->voted_at)
+                                                    <span style="font-size:.75rem;color:var(--text-muted)">
+                                                        {{ \Carbon\Carbon::parse($voter->voted_at)->format('M d, Y h:i A') }}
+                                                    </span>
+                                                @else
+                                                    <span style="font-size:.75rem;color:var(--text-muted)">
+                                                        —
+                                                    </span>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @if ($voter->has_voted)
+                                                    <form
+                                                        action="{{ route('admin.voters.reset', $voter) }}"
+                                                        method="POST"
+                                                        style="display:inline-block"
+                                                        onsubmit="return confirm('Reset this voter status? Their recorded votes will be deleted.')"
+                                                    >
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <button type="submit" class="btn-outline-gold btn-sm-ssc me-1">
+                                                            Reset
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <button type="button" class="btn-outline-gold btn-sm-ssc me-1" disabled>
+                                                        Reset
+                                                    </button>
+                                                @endif
+
+                                                <form
+                                                    action="{{ route('admin.voters.delete', $voter) }}"
+                                                    method="POST"
+                                                    style="display:inline-block"
+                                                    onsubmit="return confirm('Remove this voter account?')"
+                                                >
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="btn-danger-ssc">
+                                                        Remove
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem">
+                                            <td colspan="7" style="text-align:center;color:var(--text-muted);padding:1rem">
                                                 No voters found.
                                             </td>
                                         </tr>
