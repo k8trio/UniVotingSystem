@@ -144,6 +144,84 @@
                         </p>
                     </div>
 
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            Please check the candidate form fields.
+                        </div>
+                    @endif
+
+                    <div class="ssc-card mb-4">
+                        <div class="ssc-card-header">
+                            <i class="bi bi-person-plus-fill"></i>
+                            Add New Candidate
+                        </div>
+
+                        <div style="padding:1rem">
+                            <form action="{{ route('admin.candidates.store') }}" method="POST">
+                                @csrf
+
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Position</label>
+                                        <select name="position_id" class="form-select" required>
+                                            <option value="">Select position</option>
+
+                                            @foreach ($positions as $position)
+                                                <option value="{{ $position->id }}">
+                                                    {{ $position->name }}
+                                                    @if ($position->college)
+                                                        — {{ $position->college }}
+                                                    @endif
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" name="last_name" class="form-control" required>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" name="first_name" class="form-control" required>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">College</label>
+                                        <select name="college" class="form-select" required>
+                                            <option value="">Select college</option>
+                                            <option value="CASL">CASL</option>
+                                            <option value="CBPA">CBPA</option>
+                                            <option value="CCS">CCS</option>
+                                            <option value="CIT">CIT</option>
+                                            <option value="CTE">CTE</option>
+                                            <option value="CTHM">CTHM</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Partylist</label>
+                                        <input type="text" name="partylist" class="form-control" placeholder="Optional">
+                                    </div>
+
+                                    <div class="col-md-4 d-flex align-items-end">
+                                        <button type="submit" class="btn-gold w-100">
+                                            <i class="bi bi-plus-circle me-1"></i>
+                                            Add Candidate
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <div class="ssc-card">
                         <div class="ssc-card-header">
                             <i class="bi bi-person-badge"></i>
@@ -173,6 +251,12 @@
 
                                             <td>
                                                 {{ $candidate->full_name }}
+
+                                                @if ($candidate->partylist)
+                                                    <div style="font-size:.72rem;color:var(--text-muted)">
+                                                        {{ $candidate->partylist }}
+                                                    </div>
+                                                @endif
                                             </td>
 
                                             <td>
@@ -194,15 +278,136 @@
                                             </td>
 
                                             <td>
-                                                <button class="btn-outline-gold btn-sm-ssc me-1">
+                                                <button
+                                                    type="button"
+                                                    class="btn-outline-gold btn-sm-ssc me-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editCandidateModal{{ $candidate->id }}"
+                                                >
                                                     Edit
                                                 </button>
 
-                                                <button class="btn-danger-ssc">
-                                                    Remove
-                                                </button>
+                                                <form
+                                                    action="{{ route('admin.candidates.delete', $candidate) }}"
+                                                    method="POST"
+                                                    style="display:inline-block"
+                                                    onsubmit="return confirm('Remove this candidate?')"
+                                                >
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="btn-danger-ssc">
+                                                        Remove
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
+
+                                        <div class="modal fade" id="editCandidateModal{{ $candidate->id }}" tabindex="-1">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                <div class="modal-content" style="background:#120000;color:var(--text-main);border:1px solid var(--border)">
+                                                    <form action="{{ route('admin.candidates.update', $candidate) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <div class="modal-header" style="border-bottom:1px solid var(--border)">
+                                                            <h5 class="modal-title" style="color:var(--gold-light)">
+                                                                Edit Candidate
+                                                            </h5>
+
+                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="row g-3">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Position</label>
+                                                                    <select name="position_id" class="form-select" required>
+                                                                        @foreach ($positions as $position)
+                                                                            <option
+                                                                                value="{{ $position->id }}"
+                                                                                @selected($candidate->position_id === $position->id)
+                                                                            >
+                                                                                {{ $position->name }}
+                                                                                @if ($position->college)
+                                                                                    — {{ $position->college }}
+                                                                                @endif
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">College</label>
+                                                                    <select name="college" class="form-select" required>
+                                                                        @foreach (['CASL', 'CBPA', 'CCS', 'CIT', 'CTE', 'CTHM'] as $college)
+                                                                            <option value="{{ $college }}" @selected($candidate->college === $college)>
+                                                                                {{ $college }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Last Name</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        name="last_name"
+                                                                        class="form-control"
+                                                                        value="{{ $candidate->last_name }}"
+                                                                        required
+                                                                    >
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">First Name</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        name="first_name"
+                                                                        class="form-control"
+                                                                        value="{{ $candidate->first_name }}"
+                                                                        required
+                                                                    >
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Partylist</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        name="partylist"
+                                                                        class="form-control"
+                                                                        value="{{ $candidate->partylist }}"
+                                                                        placeholder="Optional"
+                                                                    >
+                                                                </div>
+
+                                                                <div class="col-md-6 d-flex align-items-end">
+                                                                    <label style="font-size:.85rem">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            name="is_active"
+                                                                            value="1"
+                                                                            @checked($candidate->is_active)
+                                                                        >
+                                                                        Active candidate
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer" style="border-top:1px solid var(--border)">
+                                                            <button type="button" class="btn-outline-gold" data-bs-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+
+                                                            <button type="submit" class="btn-gold">
+                                                                Save Changes
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @empty
                                         <tr>
                                             <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1rem">
@@ -215,7 +420,6 @@
                         </div>
                     </div>
                 </div>
-
                 {{-- VOTERS TAB --}}
                 <div class="admin-tab" id="admin-voters">
                     <div class="page-hero" style="margin:-1.5rem -1.5rem 1.5rem;text-align:left;padding:1.5rem">

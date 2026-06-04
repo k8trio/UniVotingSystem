@@ -38,7 +38,14 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index']);
+    Route::post('/admin/candidates', [AdminController::class, 'storeCandidate'])
+        ->name('admin.candidates.store');
+    Route::put('/admin/candidates/{candidate}', [AdminController::class, 'updateCandidate'])
+        ->name('admin.candidates.update');
+    Route::delete('/admin/candidates/{candidate}', [AdminController::class, 'deleteCandidate'])
+        ->name('admin.candidates.delete');
 });
+
 
 // Authentication routes
 Route::post('/api/auth/login', [AuthController::class, 'login']);
