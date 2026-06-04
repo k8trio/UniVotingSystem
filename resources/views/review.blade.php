@@ -1,46 +1,54 @@
 <x-layout>
-    <div class="page active" id="page-finalize">
-        <div class="ballot-outer">
-            <div class="blur-frame blur-frame-left"></div>
-            <div class="blur-frame blur-frame-right"></div>
+    <div class="page active" id="page-review">
+        <div class="container py-5">
 
-            <div class="ballot-content">
-
-                <div class="text-center mb-3 pt-2">
-                    <h2 style="color:var(--gold-light)">
-                        Finalize Your Vote
-                    </h2>
-
-                    <p style="font-size:.8rem;color:var(--text-muted)">
-                        Review all your selections below before submitting
-                    </p>
+            <div class="text-center mb-4">
+                <div class="cinzel" style="font-size:.75rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase">
+                    UniVotingSystem
                 </div>
 
-                <div class="ssc-card mb-3">
-                    <div class="ssc-card-header">
-                        <i class="bi bi-person-badge-fill"></i>
-                        Your Selections
-                    </div>
+                <h2 style="color:var(--gold-light)">
+                    Review Your Ballot
+                </h2>
 
-                    <div id="reviewSelections" style="padding:1rem">
-                        <div style="color:var(--text-muted);font-size:.82rem;text-align:center">
-                            Loading your selected candidates...
-                        </div>
-                    </div>
+                <p style="color:var(--text-muted);font-size:.9rem">
+                    Please review your selected candidates before submitting your vote.
+                </p>
+            </div>
+
+            <div class="ssc-card mx-auto" style="max-width:900px">
+                <div class="ssc-card-header">
+                    <i class="bi bi-clipboard-check me-2"></i>
+                    Selected Candidates
                 </div>
 
-                <div class="d-flex gap-3 justify-content-center mt-3 mb-5 flex-wrap">
-                    <a href="/ballot" class="btn-outline-gold">
-                        <i class="bi bi-arrow-left me-1"></i>
-                        Edit Ballot
-                    </a>
+                <div class="p-3">
+                    <div id="reviewSelections"></div>
 
-                    <button type="button" class="btn-gold" style="padding:.7rem 2rem" onclick="submitFinalVote()">
-                        <i class="bi bi-send-fill me-2"></i>
-                        SUBMIT VOTE
-                    </button>
+                    <div id="emptyReviewMessage" class="text-center py-4" style="display:none;color:var(--text-muted)">
+                        No candidates selected yet.
+                        <br>
+                        <a href="/ballot" style="color:var(--gold)">
+                            Go back to ballot
+                        </a>
+                    </div>
+
+                    <div id="submitMessage" class="mt-3"></div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="/ballot" class="btn-outline-gold">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            Back to Ballot
+                        </a>
+
+                        <button type="button" class="btn-gold" onclick="submitFinalVote()">
+                            <i class="bi bi-send-check me-2"></i>
+                            Submit Vote
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </x-layout>

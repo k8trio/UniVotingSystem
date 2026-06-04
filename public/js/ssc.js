@@ -375,9 +375,8 @@ function submitFinalVote() {
 
     // Prepare votes in the format expected by the backend
     const votes = selections.map(item => ({
-        position: item.position,
-        candidate_name: item.candidate,
-        candidate_college: item.college
+        position_id: item.position_id,
+        candidate_id: item.candidate_id
     }));
 
     // Show loading state
