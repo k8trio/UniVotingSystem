@@ -95,7 +95,7 @@ async function loginRedirect() {
     }
 
     try {
-        const response = await fetch('/login', {
+        const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ async function registerAccount() {
     }
 
     try {
-        const response = await fetch('/register-account', {
+        const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
