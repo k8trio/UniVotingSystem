@@ -9,6 +9,11 @@ use App\Models\Vote;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Exports\VotersExport;
+use App\Exports\CandidatesExport;
+use App\Exports\ResultsExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -154,135 +159,130 @@ class AdminController extends Controller
         return redirect('/admin#voters')->with('success', 'Voter removed successfully.');
     }
 
-    public function exportVoters()
+    public function exportVoters(string $format)
     {
-        $filename = 'voters_report.csv';
+        $voters = User::where('role', 'voter')
+            ->orderBy('college')
+            ->orderBy('last_name')
+            ->get();
 
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ];
+        $format = strtolower($format);
 
-        $callback = function () {
-            $file = fopen('php://output', 'w');
+        if ($format === 'pdf') {
+            $pdf = Pdf::loadView('exports.voters', [
+                'voters' => $voters,
+            ])->setPaper('a4', 'portrait');
 
-            fputcsv($file, [
-                'Student ID',
-                'Last Name',
-                'First Name',
-                'College',
-                'Year and Section',
-                'Status',
-                'Voted At',
-            ]);
+            return $pdf->download('voters_report.pdf');
+        }
 
-            $voters = User::where('role', 'voter')
-                ->orderBy('college')
-                ->orderBy('last_name')
-                ->get();
+        if ($format === 'xlsx') {
+            return Excel::download(
+                new VotersExport($voters),
+                'voters_report.xlsx'
+            );
+        }
 
-            foreach ($voters as $voter) {
-                fputcsv($file, [
-                    $voter->student_id,
-                    $voter->last_name,
-                    $voter->first_name,
-                    $voter->college,
-                    $voter->year_and_section,
-                    $voter->has_voted ? 'Voted' : 'Not Yet',
-                    $voter->voted_at,
-                ]);
-            }
+        if ($format === 'csv') {
+            return Excel::download(
+                new VotersExport($voters),
+                'voters_report.csv',
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        }
 
-            fclose($file);
-        };
+        if ($format === 'json') {
+            return response()
+                ->json($voters)
+                ->setEncodingOptions(JSON_PRETTY_PRINT)
+                ->header('Content-Disposition', 'attachment; filename="voters_report.json"');
+        }
 
-        return response()->stream($callback, 200, $headers);
+        abort(404);
     }
 
-    public function exportCandidates()
+    public function exportCandidates(string $format)
     {
-        $filename = 'candidates_report.csv';
+        $candidates = Candidate::with('position')
+            ->orderBy('position_id')
+            ->orderBy('last_name')
+            ->get();
 
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ];
+        $format = strtolower($format);
 
-        $callback = function () {
-            $file = fopen('php://output', 'w');
+        if ($format === 'pdf') {
+            $pdf = Pdf::loadView('exports.candidates', [
+                'candidates' => $candidates,
+            ])->setPaper('a4', 'portrait');
 
-            fputcsv($file, [
-                'Position',
-                'Last Name',
-                'First Name',
-                'College',
-                'Partylist',
-                'Status',
-            ]);
+            return $pdf->download('candidates_report.pdf');
+        }
 
-            $candidates = Candidate::with('position')
-                ->orderBy('position_id')
-                ->orderBy('last_name')
-                ->get();
+        if ($format === 'xlsx') {
+            return Excel::download(
+                new CandidatesExport($candidates),
+                'candidates_report.xlsx'
+            );
+        }
 
-            foreach ($candidates as $candidate) {
-                fputcsv($file, [
-                    $candidate->position->name ?? 'No Position',
-                    $candidate->last_name,
-                    $candidate->first_name,
-                    $candidate->college,
-                    $candidate->partylist,
-                    $candidate->is_active ? 'Active' : 'Inactive',
-                ]);
-            }
+        if ($format === 'csv') {
+            return Excel::download(
+                new CandidatesExport($candidates),
+                'candidates_report.csv',
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        }
 
-            fclose($file);
-        };
+        if ($format === 'json') {
+            return response()
+                ->json($candidates)
+                ->setEncodingOptions(JSON_PRETTY_PRINT)
+                ->header('Content-Disposition', 'attachment; filename="candidates_report.json"');
+        }
 
-        return response()->stream($callback, 200, $headers);
+        abort(404);
     }
 
-    public function exportResults()
+    public function exportResults(string $format)
     {
-        $filename = 'results_report.csv';
+        $results = Candidate::with('position')
+            ->withCount(['votes as total_votes'])
+            ->orderBy('position_id')
+            ->orderByDesc('total_votes')
+            ->get();
 
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ];
+        $format = strtolower($format);
 
-        $callback = function () {
-            $file = fopen('php://output', 'w');
-
-            fputcsv($file, [
-                'Position',
-                'Candidate',
-                'College',
-                'Total Votes',
+        if ($format === 'pdf') {
+            $pdf = Pdf::loadView('exports.results', [
+                'results' => $results,
             ]);
 
-            $candidates = Candidate::with('position')
-                ->orderBy('position_id')
-                ->orderBy('last_name')
-                ->get();
+            return $pdf->download('results_report.pdf');
+        }
 
-            $voteCounts = Vote::selectRaw('candidate_id, COUNT(*) as total_votes')
-                ->whereNotNull('candidate_id')
-                ->groupBy('candidate_id')
-                ->pluck('total_votes', 'candidate_id');
+        if ($format === 'xlsx') {
+            return Excel::download(
+                new ResultsExport($results),
+                'results_report.xlsx'
+            );
+        }
 
-            foreach ($candidates as $candidate) {
-                fputcsv($file, [
-                    $candidate->position->name ?? 'No Position',
-                    $candidate->full_name,
-                    $candidate->college,
-                    $voteCounts[$candidate->id] ?? 0,
-                ]);
-            }
+        if ($format === 'csv') {
+            return Excel::download(
+                new ResultsExport($results),
+                'results_report.csv',
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        }
 
-            fclose($file);
-        };
+        if ($format === 'json') {
+            return response()
+                ->json($results)
+                ->setEncodingOptions(JSON_PRETTY_PRINT)
+                ->header('Content-Disposition', 'attachment; filename="results_report.json"');
+        }
 
-        return response()->stream($callback, 200, $headers);
+        abort(404);
     }
 }

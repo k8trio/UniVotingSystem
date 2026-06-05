@@ -824,6 +824,26 @@ h5,
     display: block;
 }
 
+.admin-dashboard-hero {
+    margin: -1.5rem -1.5rem 1rem;
+    text-align: left;
+    padding: 1.2rem 1.5rem 1rem;
+}
+
+.admin-dashboard-hero h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.admin-dashboard-hero #exportMessage {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem;
+}
+
+.admin-dashboard-hero .admin-export-actions {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
 
 .college-badge {
     font-size: .62rem;
@@ -964,4 +984,109 @@ h5,
 ::-webkit-scrollbar-thumb {
     background: var(--crimson);
     border-radius: 3px;
+}
+
+/* ========================
+   PDF EXPORT ONLY
+   ======================== */
+
+body.export-pdf {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-family: DejaVu Sans, sans-serif !important;
+    font-size: 11px !important;
+    padding: 20px;
+}
+
+body.export-pdf .report-title {
+    color: #111111 !important;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+body.export-pdf .report-subtitle {
+    color: #333333 !important;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 11px;
+}
+
+body.export-pdf .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff !important;
+}
+
+body.export-pdf .report-table thead,
+body.export-pdf .report-table tbody,
+body.export-pdf .report-table tr {
+    background: #ffffff !important;
+}
+
+body.export-pdf .report-table th {
+    background: #eeeeee !important;
+    color: #111111 !important;
+    border: 1px solid #333333;
+    padding: 6px;
+    text-align: left;
+    font-weight: bold;
+}
+
+body.export-pdf .report-table td {
+    background: #ffffff !important;
+    color: #111111 !important;
+    border: 1px solid #333333;
+    padding: 6px;
+    text-align: left;
+}
+
+.admin-export-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.export-dropdown-box {
+    width: 100%;
+}
+
+.export-main-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 0.4rem 0.5rem;
+}
+
+.export-dropdown-menu {
+    width: 100%;
+    background: #120000;
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+    padding: 0.35rem;
+}
+
+.export-dropdown-item {
+    color: var(--text-main);
+    font-size: 0.82rem;
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem;
+    text-align: center;
+}
+
+.export-dropdown-item:hover,
+.export-dropdown-item:focus {
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--gold-light);
+}
+
+@media (max-width: 768px) {
+    .admin-export-actions {
+        grid-template-columns: 1fr;
+    }
 }

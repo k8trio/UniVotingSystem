@@ -40,44 +40,75 @@
 
                 {{-- DASHBOARD TAB --}}
                 <div class="admin-tab active" id="admin-dashboard">
-                    <div class="page-hero" style="margin:-1.5rem -1.5rem 1.5rem;text-align:left;padding:1.5rem">
+                    <div class="page-hero admin-dashboard-hero">
                         <h2 style="font-size:1.1rem">
-                            Admin Dashboard
+                            Welcome, Admin! · SSC Elections 2026
                         </h2>
 
-                        <p>
-                            Welcome, Admin! · SSC Elections 2026
-                        </p>
                         <div id="exportMessage" class="mt-3"></div>
 
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            <button
-                                type="button"
-                                class="btn-outline-gold btn-sm-ssc"
-                                onclick="downloadReport('{{ route('admin.export.voters') }}', 'voters_report.csv')"
-                            >
-                                <i class="bi bi-download me-1"></i>
-                                Export Voters CSV
-                            </button>
+                        <div class="admin-export-actions">
 
-                            <button
-                                type="button"
-                                class="btn-outline-gold btn-sm-ssc"
-                                onclick="downloadReport('{{ route('admin.export.candidates') }}', 'candidates_report.csv')"
-                            >
-                                <i class="bi bi-download me-1"></i>
-                                Export Candidates CSV
-                            </button>
+                            {{-- VOTERS EXPORT --}}
+                            <div class="dropdown export-dropdown-box">
+                                <button
+                                    class="btn-outline-gold btn-sm-ssc dropdown-toggle export-main-btn"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <i class="bi bi-download me-1"></i>
+                                    Export Voters
+                                </button>
 
-                            <button
-                                type="button"
-                                class="btn-outline-gold btn-sm-ssc"
-                                onclick="downloadReport('{{ route('admin.export.results') }}', 'results_report.csv')"
-                            >
-                                <i class="bi bi-download me-1"></i>
-                                Export Results CSV
-                            </button>
-                        </div>
+                                <ul class="dropdown-menu export-dropdown-menu">
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.voters', ['format' => 'pdf']) }}', 'voters_report.pdf')">PDF</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.voters', ['format' => 'xlsx']) }}', 'voters_report.xlsx')">XLSX</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.voters', ['format' => 'csv']) }}', 'voters_report.csv')">CSV</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.voters', ['format' => 'json']) }}', 'voters_report.json')">JSON</button></li>
+                                </ul>
+                            </div>
+
+                            {{-- CANDIDATES EXPORT --}}
+                            <div class="dropdown export-dropdown-box">
+                                <button
+                                    class="btn-outline-gold btn-sm-ssc dropdown-toggle export-main-btn"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <i class="bi bi-download me-1"></i>
+                                    Export Candidates
+                                </button>
+
+                                <ul class="dropdown-menu export-dropdown-menu">
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.candidates', ['format' => 'pdf']) }}', 'candidates_report.pdf')">PDF</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.candidates', ['format' => 'xlsx']) }}', 'candidates_report.xlsx')">XLSX</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.candidates', ['format' => 'csv']) }}', 'candidates_report.csv')">CSV</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.candidates', ['format' => 'json']) }}', 'candidates_report.json')">JSON</button></li>
+                                </ul>
+                            </div>
+
+                            {{-- RESULTS EXPORT --}}
+                            <div class="dropdown export-dropdown-box">
+                                <button
+                                    class="btn-outline-gold btn-sm-ssc dropdown-toggle export-main-btn"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <i class="bi bi-download me-1"></i>
+                                    Export Results
+                                </button>
+
+                                <ul class="dropdown-menu export-dropdown-menu">
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.results', ['format' => 'pdf']) }}', 'results_report.pdf')">PDF</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.results', ['format' => 'xlsx']) }}', 'results_report.xlsx')">XLSX</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.results', ['format' => 'csv']) }}', 'results_report.csv')">CSV</button></li>
+                                    <li><button type="button" class="dropdown-item export-dropdown-item" onclick="downloadReport('{{ route('admin.export.results', ['format' => 'json']) }}', 'results_report.json')">JSON</button></li>
+                                </ul>
+                            </div>
+                         </div>
                     </div>
 
                     <div class="row g-3 mb-4">

@@ -48,11 +48,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.voters.reset');
     Route::delete('/admin/voters/{user}', [AdminController::class, 'deleteVoter'])
         ->name('admin.voters.delete');
-    Route::get('/admin/export/voters', [AdminController::class, 'exportVoters'])
+    Route::get('/admin/export/voters/{format}', [AdminController::class, 'exportVoters'])
         ->name('admin.export.voters');
-    Route::get('/admin/export/candidates', [AdminController::class, 'exportCandidates'])
+    Route::get('/admin/export/candidates/{format}', [AdminController::class, 'exportCandidates'])
         ->name('admin.export.candidates');
-    Route::get('/admin/export/results', [AdminController::class, 'exportResults'])
+    Route::get('/admin/export/results/{format}', [AdminController::class, 'exportResults'])
         ->name('admin.export.results');
 });
 
