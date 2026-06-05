@@ -187,11 +187,11 @@ async function registerAccount() {
 
         registerMessage.innerHTML = `
             <div class="alert alert-success">
-                Registration successful. Redirecting...
+                Registration successful. Redirecting to login...
             </div>
         `;
 
-        window.location.href = data.redirect || '/ballot';
+        window.location.href = data.redirect || '/';
     } catch (error) {
         registerMessage.innerHTML = `
             <div class="alert alert-danger">
@@ -377,26 +377,24 @@ function submitFinalVote() {
         return;
     }
 
-    // Prepare votes in the format expected by the backend
     const votes = selections.map(item => ({
         position_id: item.position_id,
         candidate_id: item.candidate_id
     }));
 
-    // Show loading state
     const submitBtn = document.querySelector('button[onclick="submitFinalVote()"]');
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Submitting...';
     }
 
-    // Submit votes to the server
-    fetch('/api/submit-votes', {
+    fetch('/submit-votes', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
         },
+        credentials: 'include',
         body: JSON.stringify({ votes: votes })
     })
     .then(response => response.json())
@@ -489,29 +487,25 @@ function initializeVotingPage() {
 }
 
 function checkVotingStatus() {
-    // Fetch voting status from the server
-    fetch('/api/voting-status', {
+    fetch('/voting-status', {
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-        }
+        },
+        credentials: 'include'
     })
     .then(response => {
         if (response.status === 401) {
-            // Not authenticated - this is expected if not logged in
             return null;
         }
         return response.json();
     })
     .then(data => {
         if (!data) return;
-
         if (data.has_voted) {
-            // User has already voted - show warning and prevent voting
             showAlreadyVotedMessage();
         }
     })
     .catch(error => {
-        // Silently fail - the check is optional
         console.error('Error checking voting status:', error);
     });
 }

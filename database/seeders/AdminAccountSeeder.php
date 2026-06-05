@@ -12,14 +12,14 @@ class AdminAccountSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['username' => 'admin'],
+            ['username' => 'ssc_admin'],
             [
                 'student_id' => null,
                 'last_name' => 'Administrator',
                 'first_name' => 'System',
                 'year_and_section' => null,
                 'college' => null,
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('ssc@2026!'),
                 'role' => 'admin',
                 'has_voted' => false,
                 'qr_code_token' => Str::random(32),
