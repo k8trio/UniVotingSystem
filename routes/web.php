@@ -59,16 +59,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // API Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/api/candidates', [ApiController::class, 'candidates']);
-    Route::get('/api/candidates/{id}', [ApiController::class, 'showCandidate']);
-    Route::post('/api/candidates', [ApiController::class, 'storeCandidate']);
-    Route::put('/api/candidates/{id}', [ApiController::class, 'updateCandidate']);
-    Route::patch('/api/candidates/{id}', [ApiController::class, 'patchCandidate']);
-    Route::delete('/api/candidates', [ApiController::class, 'deleteAllCandidates']);
-    Route::delete('/api/candidates/{id}', [ApiController::class, 'deleteCandidate']);
-    Route::get('/api/results', [ApiController::class, 'results']);
+    Route::get('/api/candidates', [ApiController::class, 'index']);
+    Route::get('/api/candidates/{id}', [ApiController::class, 'show']);
+    Route::post('/api/candidates', [ApiController::class, 'store']);
+    Route::put('/api/candidates/{id}', [ApiController::class, 'update']);
+    Route::patch('/api/candidates/{id}', [ApiController::class, 'patch']);
+    Route::delete('/api/candidates', [ApiController::class, 'destroyAll']);
+    Route::delete('/api/candidates/{id}', [ApiController::class, 'destroy']);
+
     Route::get('/api/voters', [ApiController::class, 'voters']);
     Route::get('/api/voters/{id}', [ApiController::class, 'showVoter']);
+    Route::post('/api/voters', [ApiController::class, 'storeVoter']);
+    Route::put('/api/voters/{id}', [ApiController::class, 'updateVoter']);
+    Route::patch('/api/voters/{id}', [ApiController::class, 'patchVoter']);
+    Route::delete('/api/voters/{id}', [ApiController::class, 'destroyVoter']);
+    Route::delete('/api/voters', [ApiController::class, 'destroyAllVoters']);
+
+    Route::get('/api/results', [ApiController::class, 'results']);
 });
 
 // Authentication routes
