@@ -7,7 +7,6 @@ use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\BallotController;
 use App\Http\Controllers\TransparencyController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ApiController;
 
 Route::get('/', function () {
     return view('login');
@@ -55,27 +54,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.export.candidates');
     Route::get('/admin/export/results', [AdminController::class, 'exportResults'])
         ->name('admin.export.results');
-});
-
-// API Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/api/candidates', [ApiController::class, 'index']);
-    Route::get('/api/candidates/{id}', [ApiController::class, 'show']);
-    Route::post('/api/candidates', [ApiController::class, 'store']);
-    Route::put('/api/candidates/{id}', [ApiController::class, 'update']);
-    Route::patch('/api/candidates/{id}', [ApiController::class, 'patch']);
-    Route::delete('/api/candidates', [ApiController::class, 'destroyAll']);
-    Route::delete('/api/candidates/{id}', [ApiController::class, 'destroy']);
-
-    Route::get('/api/voters', [ApiController::class, 'voters']);
-    Route::get('/api/voters/{id}', [ApiController::class, 'showVoter']);
-    Route::post('/api/voters', [ApiController::class, 'storeVoter']);
-    Route::put('/api/voters/{id}', [ApiController::class, 'updateVoter']);
-    Route::patch('/api/voters/{id}', [ApiController::class, 'patchVoter']);
-    Route::delete('/api/voters/{id}', [ApiController::class, 'destroyVoter']);
-    Route::delete('/api/voters', [ApiController::class, 'destroyAllVoters']);
-
-    Route::get('/api/results', [ApiController::class, 'results']);
 });
 
 // Authentication routes
