@@ -421,24 +421,19 @@ function submitFinalVote() {
     });
 }
 
-function showAdminTab(event, tabName) {
+function showAdminTab(event, tab) {
     event.preventDefault();
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.sidebar-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-mobile-nav-item').forEach(t => t.classList.remove('active'));
 
-    document.querySelectorAll('.admin-tab').forEach(tab => {
-        tab.classList.remove('active');
+    document.getElementById('admin-' + tab).classList.add('active');
+
+    document.querySelectorAll('.sidebar-item, .admin-mobile-nav-item').forEach(item => {
+        if (item.getAttribute('href') === '#' + tab) {
+            item.classList.add('active');
+        }
     });
-
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.classList.remove('active');
-    });
-
-    const selectedTab = document.getElementById('admin-' + tabName);
-
-    if (selectedTab) {
-        selectedTab.classList.add('active');
-    }
-
-    event.currentTarget.classList.add('active');
 }
 
 function loadVotedInfo() {

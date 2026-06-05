@@ -1,5 +1,27 @@
 <x-layout :admin="true">
     <div class="page active" id="page-admin">
+        <div class="admin-mobile-nav">
+    <a href="#dashboard" class="admin-mobile-nav-item active" onclick="showAdminTab(event, 'dashboard')">
+        <i class="bi bi-speedometer2"></i>
+        Dashboard
+    </a>
+    <a href="#candidates" class="admin-mobile-nav-item" onclick="showAdminTab(event, 'candidates')">
+        <i class="bi bi-person-badge"></i>
+        Candidates
+    </a>
+    <a href="#voters" class="admin-mobile-nav-item" onclick="showAdminTab(event, 'voters')">
+        <i class="bi bi-people-fill"></i>
+        Voters
+    </a>
+    <a href="#results" class="admin-mobile-nav-item" onclick="showAdminTab(event, 'results')">
+        <i class="bi bi-bar-chart-fill"></i>
+        Results
+    </a>
+    <a href="#" class="admin-mobile-nav-item" onclick="logoutUser()">
+        <i class="bi bi-box-arrow-right"></i>
+        Logout
+    </a>
+</div>
         <div class="d-flex">
             <div class="admin-sidebar">
                 <div style="padding:.75rem 1.4rem .5rem;font-size:.62rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase">
