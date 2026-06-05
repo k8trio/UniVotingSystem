@@ -9,15 +9,15 @@
     ],
     "license": "MIT",
     "require": {
-    "php": "^8.3",
-    "ext-gd": "*",
-    "ext-zip": "*",
-    "barryvdh/laravel-dompdf": "^3.1",
-    "endroid/qr-code": "^5.0",
-    "laravel/framework": "^12.0",
-    "laravel/sanctum": "^4.0",
-    "laravel/tinker": "^3.0",
-    "maatwebsite/excel": "^3.1"
+        "php": "^8.3",
+        "ext-gd": "*",
+        "ext-zip": "*",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "endroid/qr-code": "^5.0",
+        "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^3.0",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -85,6 +85,9 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform": {
+            "php": "8.3.31"
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
