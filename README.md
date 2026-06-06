@@ -11,9 +11,9 @@ By replacing manual voting procedures, the UninVoting System improves accuracy, 
 
 ## Developers
 
-Inoue, Kate Diane G.
-Rico, Raphael Russel T.
-Torio, Nathalie Kate L.
+*Inoue, Kate Diane G.
+*Rico, Raphael Russel T.
+*Torio, Nathalie Kate L.
 
 ## How the system works
 
@@ -39,9 +39,7 @@ Torio, Nathalie Kate L.
 
 ## Installation/setup instructions
 
-    # Installation and Setup Instructions
-
-## System Requirements
+# System Requirements
 
 * PHP 8.3 or 8.4
 * Composer
@@ -50,7 +48,7 @@ Torio, Nathalie Kate L.
 * Laravel Framework
 * Web Browser (Google Chrome, Microsoft Edge, Firefox, etc.)
 
-## Installation Steps
+# Installation Steps
 1. Obtain the Project Files
 
 Download or clone the UniVoting System project to your repository in Github.
@@ -120,21 +118,21 @@ The system can then be accessed through:
 
 http://127.0.0.1:8000
 
-## User Registration and Login
+# User Registration and Login
 1. Open the Voting System in a web browser.
 2. If the user does not have an account, click "Create an Account" and complete the registration form.
 3. Log in using the registered student id and password.
 4. Upon successful login, the user is redirected to the User Dashboard.
 5. If incorrect credentials are entered, the user is redirected back to the login page and an "Invalid Credentials" message is displayed.
 
-## Voting Process
+# Voting Process
 1. From the User Dashboard, you can just click the candidate you want from a specific position.
 2. Submit the vote and confirm the selection.
 3. Review the list of candidates displayed by the system.
 4. The system records the vote and updates the user's voting status.
 5. Once a vote has been submitted, the user cannot vote again for the same credentials from the login.
 
-## Administrator Access
+# Administrator Access
 
 1. Log in using the administrator credentials.
 2. Access the Admin Dashboard.
@@ -144,4 +142,4 @@ http://127.0.0.1:8000
 
 ## Hosting Link
 
-<Railway>
+*Railway
