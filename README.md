@@ -1,6 +1,6 @@
 ## Project Description 
 
-UniVoting System  - This UniVoting System is designed to make the voting process faster, more organized, and secure. It allows registered voters to cast their votes electronically through a user-friendly interface. The system includes separate dashboards for voters and administrator to manage voting activities efficiently.
+UniVoting System  - The UniVoting System is designed to make the voting process faster, more organized, and secure. It allows registered voters to cast their votes electronically through a user-friendly interface. The system includes separate dashboards for voters and administrator to manage voting activities efficiently.
 
 Voters can log in to their accounts, view the list of candidates, and submit their votes. The system ensures that each voter can vote only once to maintain the integrity of the election. After voting, the vote is securely recorded in the database.
 
@@ -18,30 +18,30 @@ By replacing manual voting procedures, the UninVoting System improves accuracy, 
 ## How the system works
 
 1. Account Registration
-   • If a user does not have an existing account, they can click the "Create an Account" button on the login page.
-   • The user fills out the registration form by providing the required information, such as their Student ID, Name (Last Name, First Name), Year & Section, College, Password and Confirm Password.
-   • After clicking the "Register Button", the system creates a new account and stores the user's information securely in the database.
+   * If a user does not have an existing account, they can click the "Create an Account" button on the login page.
+   * The user fills out the registration form by providing the required information, such as their Student ID, Name (Last Name, First Name), Year & Section, College, Password and Confirm Password.
+   * After clicking the "Register Button", the system creates a new account and stores the user's information securely in the database.
 2. User Login
-   • Once registered, the user can log in using their student id and password.
-   • If the login details are correct, the user is redirected to the User Dashboard.
-   • However, if the student id or password is incorrect, the system redirects the user back to the login page and displays an error message stating "Invalid Credentials", allowing the user to try logging in again.
+   * Once registered, the user can log in using their student id and password.
+   * If the login details are correct, the user is redirected to the User Dashboard.
+   * However, if the student id or password is incorrect, the system redirects the user back to the login page and displays an error message stating "Invalid Credentials", allowing the user to try logging in again.
 3. User Dashboard
-   • The User Dashboard serves as the main page for voters after logging in.
-   • It displays important information such as voting progress, and the election dashboard where you can now choose your candidate for a specific position.
-   • After voting you will now review & submit your vote by clicking the "review & submit button", where you can edit you vote before officially submitting it.
-   • After clicking the submit button, it will display a message stating "Vote Submitted!" and your status if you're already voted or not. Lastly, you will see when and what time did you vote.
-   • You can also view the transparency dashboard, where you can see the numbers of registered voters, voters submitted, total vote entries, and the election results by position.
+   * The User Dashboard serves as the main page for voters after logging in.
+   * It displays important information such as voting progress, and the election dashboard where you can now choose your candidate for a specific position.
+   * After voting you will now review & submit your vote by clicking the "review & submit button", where you can edit you vote before officially submitting it.
+   * After clicking the submit button, it will display a message stating "Vote Submitted!" and your status if you're already voted or not. Lastly, you will see when and what time did you vote.
+   * You can also view the transparency dashboard, where you can see the numbers of registered voters, voters submitted, total vote entries, and the election results by position.
 4. Administrator Dashboard
-   • Administrators log in through the Admin Dashboard.
-   • They can manage candidates, voters, voters by colleges and monitor vote counts or the results.
-   • The system automatically tallies votes and displays results for authorized administrators.
-   • The admin can also export the names of voter, candidates, and the most important the results.
+   * Administrators log in through the Admin Dashboard.
+   * They can manage candidates, voters, voters by colleges and monitor vote counts or the results.
+   * The system automatically tallies votes and displays results for authorized administrators.
+   * The admin can also export the names of voter, candidates, and the most important the results.
 
 ## Installation/setup instructions
 
 # System Requirements
 
-* PHP 8.3 or 8.4
+* PHP 8.3 or higher
 * Composer
 * sqlite Database
 * VsCode
@@ -142,4 +142,4 @@ http://127.0.0.1:8000
 
 ## Hosting Link
 
-*Railway
+https://univotingsystem-production.up.railway.app/?fbclid=IwY2xjawSQpyJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEeXOB_M1HxHytfhyBRd2nnccm1UDHDzLNLaS9IQ8HjC_YZmrkw_D3V2GePVIk_aem_xIvFelD7lFrF7f6wvL054Q
