@@ -11,9 +11,9 @@ By replacing manual voting procedures, the UninVoting System improves accuracy, 
 
 ## Developers
 
-*Inoue, Kate Diane G.
-*Rico, Raphael Russel T.
-*Torio, Nathalie Kate L.
+* Inoue, Kate Diane G.
+* Rico, Raphael Russel T.
+* Torio, Nathalie Kate L.
 
 ## How the system works
 
