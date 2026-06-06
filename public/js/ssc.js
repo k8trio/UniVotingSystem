@@ -567,7 +567,7 @@ async function downloadReport(url, filename) {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Accept': 'text/csv',
+                'Accept': '*/*',
             },
         });
 
