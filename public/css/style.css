@@ -1171,3 +1171,18 @@ body.export-pdf .report-table td {
     opacity: .4;
     cursor: not-allowed;
 }
+
+.pagination .page-link {
+    background: var(--bg-card);
+    border-color: var(--border);
+    color: var(--gold-light);
+}
+.pagination .page-link:hover {
+    background: var(--bg-card2);
+    color: var(--gold);
+}
+.pagination .page-item.active .page-link {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    color: var(--yellow-light);
+}
