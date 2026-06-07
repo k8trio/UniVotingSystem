@@ -2,7 +2,7 @@
     <div class="page active" id="page-voted">
         <div class="voted-wrap">
             <div>
-                <div class="voted-icon">
+                <div style="font-size:3.5rem;color:var(--yellow-light);margin-bottom:1rem">
                     <i class="bi bi-patch-check-fill"></i>
                 </div>
 
