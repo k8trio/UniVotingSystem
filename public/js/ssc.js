@@ -64,18 +64,6 @@ function registerUser() {
         })
     })
     .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            // Redirect to QR verification page
-            window.location.href = '/qr-verification';
-        } else {
-            alert('Registration failed: ' + (data.message || 'Unknown error'));
-        }
-    })
-    .catch(error => {
-        console.error('Registration error:', error);
-        alert('An error occurred during registration. Please try again.');
-    });
 }
 
 async function loginRedirect() {
@@ -526,19 +514,18 @@ function showAlreadyVotedMessage() {
                     z-index: 9999;
                 ">
                     <div style="
-                        background: #ffffff;
-                        border: 2px solid #c9a84c;
-                        border-radius: 12px;
-                        padding: 2.5rem 2rem;
+                        background: var(--bg-dark);
+                        border: 1px solid var(--gold);
+                        border-radius: 8px;
+                        padding: 2rem;
                         text-align: center;
-                        max-width: 420px;
-                        box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+                        max-width: 400px;
                     ">
-                        <div style="font-size: 3rem; margin-bottom: 1rem; color: #c9a84c;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold-light);">
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
-                        <h2 style="color: #0f2f6a; font-family: 'Cinzel', serif; margin-bottom: 0.75rem;">You've Already Voted!</h2>
-                        <p style="color: #555; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        <h2 style="color: var(--gold-light); margin-bottom: 0.5rem;">You've Already Voted!</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
                             Each voter can only vote once. Your vote has already been recorded.
                         </p>
                         <a href="/transparency" class="btn-outline-gold">
@@ -568,7 +555,7 @@ async function downloadReport(url, filename) {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Accept': '/',
+                'Accept': 'text/csv',
             },
         });
 
