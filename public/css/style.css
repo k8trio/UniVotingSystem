@@ -749,7 +749,6 @@ h1, h2, h3, h4, h5, .cinzel {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 3px solid var(--yellow);
     background: transparent;
     display: flex;
     align-items: center;
@@ -757,7 +756,6 @@ h1, h2, h3, h4, h5, .cinzel {
     font-size: 2rem;
     color: var(--yellow-light);
     margin: 0 auto 1.25rem;
-    box-shadow: 0 4px 20px rgba(230,168,0,.25);
 }
 
 #page-admin {
