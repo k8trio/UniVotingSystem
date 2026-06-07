@@ -130,10 +130,10 @@
                                         </td>
                                     </tr>
                                 ).join('') : 
-                                    <tr>
+                                    `<tr>
                                         <td colspan="4" class="text-center" style="color:var(--text-muted)">No candidates available.</td>
-                                    </tr>
-                                `}
+                                    </tr>`
+                                }
                             </tbody>
                         </table>
                     </div>
