@@ -64,6 +64,18 @@ function registerUser() {
         })
     })
     .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Redirect to QR verification page
+            window.location.href = '/qr-verification';
+        } else {
+            alert('Registration failed: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Registration error:', error);
+        alert('An error occurred during registration. Please try again.');
+    });
 }
 
 async function loginRedirect() {
@@ -555,7 +567,7 @@ async function downloadReport(url, filename) {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Accept': 'text/csv',
+                'Accept': '/',
             },
         });
 
