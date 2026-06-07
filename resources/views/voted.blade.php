@@ -6,16 +6,16 @@
                     <i class="bi bi-patch-check-fill"></i>
                 </div>
 
-                <h2 class="cinzel" style="font-size:1.4rem;color:var(--gold-light);margin-bottom:.5rem">
+                <h2 class="cinzel" style="font-size:1.4rem;color:var(--yellow-light);margin-bottom:.5rem">
                     Vote Submitted!
                 </h2>
-
-                <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:1.5rem">
+                
+                <p style="color:rgba(255,255,255,.75);font-size:.9rem;margin-bottom:1.5rem">
                     Thank you for participating in SSC Elections 2026.<br>
                     Your vote has been recorded.
                 </p>
 
-                <div id="votedInfo" style="font-size:.8rem;color:var(--text-muted);margin-bottom:1.5rem">
+                <div id="votedInfo" style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem">
                     <i class="bi bi-clock me-1"></i>
                     <span id="submittedTime">Submitted successfully</span><br>
 
