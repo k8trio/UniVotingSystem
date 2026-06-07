@@ -388,20 +388,19 @@
 
                                         <div class="modal fade" id="editCandidateModal{{ $candidate->id }}" tabindex="-1">
                                             <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                <div class="modal-content" style="background:#120000;color:var(--text-main);border:1px solid var(--border)">
+                                                <div class="modal-content" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border);">
                                                     <form action="{{ route('admin.candidates.update', $candidate) }}" method="POST">
                                                         @csrf
                                                         @method('PUT')
 
-                                                        <div class="modal-header" style="border-bottom:1px solid var(--border)">
-                                                            <h5 class="modal-title" style="color:var(--gold-light)">
+                                                        <div class="modal-header" style="background: linear-gradient(90deg, var(--blue-dark), var(--blue)); border-bottom: 2px solid var(--yellow);">
+                                                            <h5 class="modal-title" style="color: var(--yellow-light); font-family: 'Cinzel', serif;">
                                                                 Edit Candidate
                                                             </h5>
-
                                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                                         </div>
 
-                                                        <div class="modal-body">
+                                                        <div class="modal-body" style="background: var(--bg-card);">
                                                             <div class="row g-3">
                                                                 <div class="col-md-6">
                                                                     <label class="form-label">Position</label>
@@ -478,7 +477,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="modal-footer" style="border-top:1px solid var(--border)">
+                                                        <div class="modal-footer" style="background: var(--bg-card); border-top: 1px solid var(--border);">
                                                             <button type="button" class="btn-outline-gold" data-bs-dismiss="modal">
                                                                 Cancel
                                                             </button>
