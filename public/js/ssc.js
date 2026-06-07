@@ -534,7 +534,19 @@ function showAlreadyVotedMessage() {
                         text-align: center;
                         max-width: 400px;
                     ">
-                        <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold-light);">
+                        <div style="
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%;
+                            border: 2px solid var(--yellow);
+                            background: transparent;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 1.8rem;
+                            color: var(--yellow-light);
+                            margin: 0 auto 1rem;
+                        ">
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
                         <h2 style="color: var(--yellow-light); margin-bottom: 0.5rem;">You've Already Voted!</h2>
