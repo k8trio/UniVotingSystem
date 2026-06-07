@@ -526,8 +526,9 @@ function showAlreadyVotedMessage() {
                     z-index: 9999;
                 ">
                     <div style="
-                        background: var(--bg-dark);
-                        border: 1px solid var(--gold);
+                        background: #ffffff;
+                        border: 2px solid #1a4fa0;
+                        box-shadow: 0 8px 32px rgba(15,47,106,.18);
                         border-radius: 8px;
                         padding: 2rem;
                         text-align: center;
@@ -536,8 +537,8 @@ function showAlreadyVotedMessage() {
                         <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold-light);">
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
-                        <h2 style="color: var(--gold-light); margin-bottom: 0.5rem;">You've Already Voted!</h2>
-                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        <h2 style="color: var(--blue-dark); margin-bottom: 0.5rem;">You've Already Voted!</h2>
+                        <p style="color: #5a6e96; margin-bottom: 1.5rem;">
                             Each voter can only vote once. Your vote has already been recorded.
                         </p>
                         <a href="/transparency" class="btn-outline-gold">
