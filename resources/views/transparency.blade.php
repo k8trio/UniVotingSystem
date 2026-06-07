@@ -118,7 +118,7 @@
                                     <tr>
                                         <td>
                                             <strong>${c.name}</strong>
-                                            ${c.partylist ? `<div style="font-size:.75rem;color:var(--text-muted)">${c.partylist}</div>` : ''}
+                                            ${c.partylist ? <div style="font-size:.75rem;color:var(--text-muted)">${c.partylist}</div> : ''}
                                         </td>
                                         <td><span class="college-badge">${c.college}</span></td>
                                         <td>${c.votes}</td>
@@ -130,10 +130,10 @@
                                         </td>
                                     </tr>
                                 ).join('') : 
-                                    `<tr>
+                                    <tr>
                                         <td colspan="4" class="text-center" style="color:var(--text-muted)">No candidates available.</td>
-                                    </tr>`
-                                }
+                                    </tr>
+                                `}
                             </tbody>
                         </table>
                     </div>
@@ -142,7 +142,7 @@
             `).join('');
 
             document.getElementById('page-info').textContent =
-                `Showing ${start + 1}–${Math.min(start + PER_PAGE, positions.length)} of ${positions.length} positions`;
+                Showing ${start + 1}–${Math.min(start + PER_PAGE, positions.length)} of ${positions.length} positions;
 
             renderPagination();
         }
@@ -158,7 +158,7 @@
             `;
 
             for (let i = 1; i <= tp; i++) {
-                html += `<button class="btn-page ${i === currentPage ? 'active' : ''}" onclick="goTo(${i})">${i}</button>`;
+                html += <button class="btn-page ${i === currentPage ? 'active' : ''}" onclick="goTo(${i})">${i}</button>;
             }
 
             html += `
