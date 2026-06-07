@@ -148,7 +148,7 @@
 
                         <div class="col-6 col-xl-3">
                             <div class="stat-card">
-                                <div class="stat-num" style="color:#90ffcc">
+                                <div class="stat-num">
                                     {{ $votesCast }}
                                 </div>
 
