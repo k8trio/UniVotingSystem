@@ -43,7 +43,7 @@ function registerUser() {
         return;
     }
 
-    if (password.length < 😎 {
+    if (password.length < 8) {
         alert('Password must be at least 8 characters');
         return;
     }
@@ -567,7 +567,7 @@ async function downloadReport(url, filename) {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Accept': '/',
+                'Accept': '*/*',
             },
         });
 
