@@ -43,7 +43,7 @@ function registerUser() {
         return;
     }
 
-    if (password.length < 8) {
+    if (password.length < 😎 {
         alert('Password must be at least 8 characters');
         return;
     }
@@ -526,18 +526,19 @@ function showAlreadyVotedMessage() {
                     z-index: 9999;
                 ">
                     <div style="
-                        background: var(--bg-dark);
-                        border: 1px solid var(--gold);
-                        border-radius: 8px;
-                        padding: 2rem;
+                        background: #ffffff;
+                        border: 2px solid #c9a84c;
+                        border-radius: 12px;
+                        padding: 2.5rem 2rem;
                         text-align: center;
-                        max-width: 400px;
+                        max-width: 420px;
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.35);
                     ">
-                        <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold-light);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem; color: #c9a84c;">
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
-                        <h2 style="color: var(--gold-light); margin-bottom: 0.5rem;">You've Already Voted!</h2>
-                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        <h2 style="color: #0f2f6a; font-family: 'Cinzel', serif; margin-bottom: 0.75rem;">You've Already Voted!</h2>
+                        <p style="color: #555; margin-bottom: 1.5rem; font-size: 0.95rem;">
                             Each voter can only vote once. Your vote has already been recorded.
                         </p>
                         <a href="/transparency" class="btn-outline-gold">
@@ -567,7 +568,7 @@ async function downloadReport(url, filename) {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Accept': '*/*',
+                'Accept': '/',
             },
         });
 
