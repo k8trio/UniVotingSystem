@@ -81,16 +81,16 @@ copy .env.example .env
 
 Open the .env file and update the database configuration:
 
-DB_CONNECTION=sqlite
+DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=laravel
+DB_DATABASE=voting_db
 DB_USERNAME=root
 DB_PASSWORD=
 
 6. Create the Database
 
-Create a new database named laravel using sqlite
+Create a new database named voting_db using mysql
 
 7. Generate the Application Key
 
@@ -118,6 +118,45 @@ The system can then be accessed through:
 
 http://127.0.0.1:8000
 
+## Tutorial of API using POSTMAN
+Our system includes RESTful API endpoints to access and manage data through HTTP requests. These APIs are useful for backend testing using tools like Postman, and they also make the system more flexible if it needs to be connected to other frontend or mobile applications in the future.
+
+In our project, we created API endpoints for managing candidates, voters, users, and results.
+
+# Candidate API
+For the candidates API, we use:
+GET /api/candidates
+This retrieves all candidates from the database.
+GET /api/candidates/{id}
+This retrieves one specific candidate using the candidate ID.
+POST /api/candidates
+This adds a new candidate to the database.
+PUT /api/candidates/{id}
+This updates all required fields of an existing candidate.
+PATCH /api/candidates/{id}
+This updates only selected fields of a candidate.
+DELETE /api/candidates/{id}
+This deletes a specific candidate.
+
+# Voters and Users API
+For the Voters API, the same RESTful structure is used. We have endpoints to retrieve all voters, retrieve a specific voter, add a new voter, update voter information, partially update voter information, and delete a voter.
+
+For the Users API, it can manage all users, including both administrator and voter accounts, depending on the system configuration.
+
+# Results API
+The results API is used to retrieve the election results. It gets the positions, candidates, and vote counts so the admin can view the real-time tally of votes.
+
+# Authentication API
+We also included API authentication using token-based login.
+The user can send their login credentials to: POST /api/login
+If the login is successful, the system returns a token. This token is used in Postman as a Bearer Token to access protected API routes.
+
+# Logout API
+We also have a logout endpoint: POST /api/logout
+The purpose of this endpoint is to invalidate or delete the current token of the logged-in user. After logging out, the old token can no longer be used to access protected API routes.
+
+This is important for security because even if someone possesses the previous token, it will no longer be valid once the user has logged out.
+
 # User Registration and Login
 1. Open the Voting System in a web browser.
 2. If the user does not have an account, click "Create an Account" and complete the registration form.
@@ -138,7 +177,6 @@ http://127.0.0.1:8000
 2. Access the Admin Dashboard.
 3. Manage candidates, voters, voters by colleges and monitor vote counts or the results and,
 4. The admin can also export the names of voter, candidates, and the most important the results.
-
 
 ## Hosting Link
 
