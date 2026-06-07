@@ -81,12 +81,12 @@ copy .env.example .env
 
 Open the .env file and update the database configuration:
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=voting_db
-DB_USERNAME=root
-DB_PASSWORD=
+* DB_CONNECTION=mysql
+* DB_HOST=127.0.0.1
+* DB_PORT=3306
+* DB_DATABASE=voting_db
+* DB_USERNAME=root
+* DB_PASSWORD=
 
 6. Create the Database
 
