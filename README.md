@@ -118,7 +118,7 @@ The system can then be accessed through:
 
 http://127.0.0.1:8000
 
-# UniVoting System — RESTful API Documentation
+# UniVoting System — RESTful API
 
 **Base URL:** `https://univotingsystem-production.up.railway.app`
 
