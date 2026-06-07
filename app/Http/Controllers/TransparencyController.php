@@ -17,7 +17,7 @@ class TransparencyController extends Controller
                     ->orderBy('first_name');
             }])
             ->orderBy('display_order')
-            ->get();
+            ->paginate(5);
 
         $voteCounts = Vote::selectRaw('candidate_id, COUNT(*) as total_votes')
             ->whereNotNull('candidate_id')
