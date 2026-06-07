@@ -7,7 +7,7 @@
             <div class="ballot-content">
 
                 <div class="text-center mb-3 pt-2">
-                    <h2 style="font-size:1.3rem;color:var(--gold-light)">
+                    <h2 style="font-size:1.3rem;color:var(--blue-dark)">
                         Official Ballot
                     </h2>
 
@@ -25,21 +25,19 @@
                             <span style="font-size:.72rem;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase">
                                 Voting Progress
                             </span>
-
-                            <span id="progressText" style="font-size:.8rem;color:var(--gold);font-family:'Cinzel',serif">
+                            <span id="progressText" style="font-size:.8rem;color:var(--blue-dark);font-family:'Cinzel',serif;font-weight:700">
                                 0 / 0
                             </span>
                         </div>
-
-                        <div style="background:rgba(255,255,255,.08);border-radius:6px;height:8px;overflow:hidden">
-                            <div id="progressBar" style="height:100%;background:linear-gradient(90deg,var(--crimson),var(--gold));width:0%;transition:width .4s;border-radius:6px"></div>
+                        <div style="background:var(--blue-pale);border-radius:6px;height:8px;overflow:hidden">
+                            <div id="progressBar" style="height:100%;background:linear-gradient(90deg,var(--blue),var(--yellow));width:0%;transition:width .4s;border-radius:6px"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="position-section">
-                    <div class="ssc-card-header" style="background:linear-gradient(90deg,#3a0000,#6a0000);font-size:.85rem;padding:.85rem 1.2rem;border-radius:8px 8px 0 0;margin-bottom:.5rem">
-                        <i class="bi bi-star-fill" style="color:var(--gold)"></i>
+                    <div class="dept-section-header dept-header-exec">
+                        <i class="bi bi-star-fill" style="color:var(--yellow-light)"></i>
                         EXECUTIVE DEPARTMENT
                     </div>
 
@@ -77,15 +75,12 @@
                                             <div class="candidate-avatar">
                                                 {{ $candidate->initials }}
                                             </div>
-
                                             <div class="candidate-name">
                                                 {{ $candidate->full_name }}
                                             </div>
-
                                             <div class="candidate-college">
                                                 {{ $candidate->college }}
                                             </div>
-
                                             @if ($candidate->partylist)
                                                 <div class="candidate-college">
                                                     {{ $candidate->partylist }}
@@ -102,8 +97,8 @@
                 <div class="gold-divider"></div>
 
                 <div class="position-section">
-                    <div class="ssc-card-header" style="background:linear-gradient(90deg,#1a1200,#3a2800);font-size:.85rem;padding:.85rem 1.2rem;border-radius:8px 8px 0 0;margin-bottom:.5rem">
-                        <i class="bi bi-building" style="color:var(--gold)"></i>
+                    <div class="dept-section-header dept-header-legis">
+                        <i class="bi bi-building" style="color:var(--yellow-light)"></i>
                         LEGISLATIVE DEPARTMENT
                     </div>
 
@@ -141,15 +136,12 @@
                                             <div class="candidate-avatar">
                                                 {{ $candidate->initials }}
                                             </div>
-
                                             <div class="candidate-name">
                                                 {{ $candidate->full_name }}
                                             </div>
-
                                             <div class="candidate-college">
                                                 {{ $candidate->college }}
                                             </div>
-
                                             @if ($candidate->partylist)
                                                 <div class="candidate-college">
                                                     {{ $candidate->partylist }}
